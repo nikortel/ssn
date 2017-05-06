@@ -6,24 +6,22 @@
                   [24 "S"] [25 "T"] [26 "U"] [27 "V"] [28 "W"] [29 "X"] [30 "Y"]])
 
 (def finnish-ssn-format #"^(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])([5-9]\d\+|\d\d[-A])\d{3}[\dA-Z]$")
-
-(defn drop-nth
-  "Drops n-th item in coll"
-  [n coll]
-  (keep-indexed #(if (not= %1 n) %2) coll))
+(def person-number-length 3)
+(def birthdate-length 6)
+(def check-mark-mod 31)
 
 (defn check-mark-base
   "Takes in Finnish social security number and returns base for check mark calculation"
   [social-security-number]
   (->>
    (drop-last social-security-number)
-   (take-last 3)
-   (concat (take 6 social-security-number))
+   (take-last person-number-length)
+   (concat (take birthdate-length social-security-number))
    (apply str)
    (Integer/parseInt)))
 
 (defn is-positive-single-digit?
-  "Determines if the number is a positive single digit number"
+  "Determines if the number is a positive single digit number or zero"
   [number]
   (and (integer? number) (< number 10) (>= number 0)))
 
@@ -38,7 +36,7 @@
 (defn check-mark
   "Takes in Finnish social security number and returns the checkmark"
   [social-security-number]
-  (let [check-mark-number (mod (check-mark-base social-security-number) 31)]
+  (let [check-mark-number (mod (check-mark-base social-security-number) check-mark-mod)]
        (if (is-positive-single-digit? check-mark-number)
          (str check-mark-number)
          (convert-check-mark check-mark-number))))
