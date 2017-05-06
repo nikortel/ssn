@@ -51,4 +51,6 @@
   (testing "1850 social security number is valid"
     (is (s/valid? :ssn.finnish/social-security-number "010150+931C")))
   (testing "Numbers only social security number is valid"
-    (is (s/valid? :ssn.finnish/social-security-number "040597-9753"))))
+    (is (s/valid? :ssn.finnish/social-security-number "040597-9753")))
+  (testing "Social security number with check mark 0 is valid"
+    (is (s/valid? :ssn.finnish/social-security-number "060597-9010"))))
