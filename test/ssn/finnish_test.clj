@@ -21,17 +21,17 @@
   (testing "Returns check mark base"
     (is (= 40597959 (check-mark-base "040597-959K")))))
 
-(deftest is-positive-single-digit?-test
+(deftest is-positive-single-digit-or-zero?-test
   (testing "Returns true when number is positive single digit - min value"
-    (is (is-positive-single-digit? 0)))
+    (is (is-positive-single-digit-or-zero? 0)))
   (testing "Returns true when number is positive single digit - max value"
-    (is (is-positive-single-digit? 9)))
+    (is (is-positive-single-digit-or-zero? 9)))
   (testing "Returns false when number is negative single digit"
-    (is (not (is-positive-single-digit? -1))))
+    (is (not (is-positive-single-digit-or-zero? -1))))
   (testing "Returns false when number is positive double digit"
-    (is (not (is-positive-single-digit? 10))))
+    (is (not (is-positive-single-digit-or-zero? 10))))
   (testing "Returns false when number is positive decimal"
-    (is (not (is-positive-single-digit? 1.1)))))
+    (is (not (is-positive-single-digit-or-zero? 1.1)))))
 
 (deftest check-mark-test
   (testing "Returns check mark from check-marks-table"

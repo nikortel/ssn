@@ -20,7 +20,7 @@
    (apply str)
    (Integer/parseInt)))
 
-(defn is-positive-single-digit?
+(defn is-positive-single-digit-or-zero?
   "Determines if the number is a positive single digit number or zero"
   [number]
   (and (integer? number) (< number 10) (>= number 0)))
@@ -37,7 +37,7 @@
   "Takes in Finnish social security number and returns the checkmark"
   [social-security-number]
   (let [check-mark-number (mod (check-mark-base social-security-number) check-mark-mod)]
-       (if (is-positive-single-digit? check-mark-number)
+       (if (is-positive-single-digit-or-zero? check-mark-number)
          (str check-mark-number)
          (convert-check-mark check-mark-number))))
 
