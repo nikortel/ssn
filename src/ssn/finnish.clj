@@ -105,10 +105,7 @@
 (defn generate-random-social-security-number
   []
   (->
-   {::day (rand-int-in-range 1 32)
-    ::month (rand-int-in-range 1 13)
-    ::year (rand-int-in-range 1850 2100)
-    ::gender (rand-nth [:male :female])}
+   (gen/generate (s/gen ::person))
    (generate-social-security-number)))
 
 (s/def ::social-security-number (s/with-gen

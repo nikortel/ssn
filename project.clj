@@ -3,6 +3,7 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.9.0-alpha16"]]
-  :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]]}}
-  :main ssn.core)
+  :dependencies [[org.clojure/clojure "1.9.0-alpha16"]
+                 [org.clojure/test.check "0.9.0"]]
+  :main ssn.core
+  :aot [ssn.core])
