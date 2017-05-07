@@ -1,7 +1,8 @@
 (ns ssn.finnish-test
   (:require [ssn.finnish :refer :all]
             [clojure.test :refer :all]
-            [clojure.spec.alpha :as s]))
+            [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]))
 
 (deftest format-spec-test
   (testing "SSN conforms to format"
@@ -125,3 +126,17 @@
       (is (= 3 (count (generate-person-number :male)))))
     (testing "Generates person number with length 3 for female"
       (is (= 3 (count (generate-person-number :female)))))))
+
+(deftest generate-social-security-number-test
+  (testing "Generates valid social security numbers for random persons"
+    (let [sample-persons (gen/sample (s/gen :ssn.finnish/person))]
+      (is (every?
+           #(s/valid? :ssn.finnish/social-security-number (generate-social-security-number %))
+           sample-persons)))))
+
+(deftest social-security-number-spec-test-with-generator
+  (testing "Generates valid social security numbers from spec"
+    (let [sample-social-security-numbers (gen/sample (s/gen :ssn.finnish/social-security-number))]
+      (is (every?
+           #(s/valid? :ssn.finnish/social-security-number %)
+           sample-social-security-numbers)))))

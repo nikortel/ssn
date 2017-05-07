@@ -1,5 +1,6 @@
 (ns ssn.finnish
-  (:require [clojure.spec.alpha :as s]))
+  (:require [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]))
 
 (def check-marks [[10 "A"] [11 "B"] [12 "C"] [13 "D"] [14 "E"] [15 "F"] [16 "H"]
                   [17 "J"] [18 "K"] [19 "L"] [20 "M"] [21 "N"] [22 "P"] [23 "R"]
@@ -75,27 +76,33 @@
 (defn generate-social-security-number
   "Takes in data in spec ::person and produces valid social security number"
   [person]
-  (let [person-number (generate-person-number (::gender person))
-        check-mark-base (->
-                         (str
-                          (::day person)
-                          (::month person)
-                          (::year person)
-                          person-number)
-                         (Integer/parseInt))
+  (let [day-padded (format "%02d" (::day person))
+        month-padded (format "%02d" (::month person))
+        year-without-century (apply str (take-last 2 (str (::year person))))
+        person-number (generate-person-number (::gender person))
+        check-mark-base (-> (str day-padded
+                                 month-padded
+                                 year-without-century
+                                 person-number)
+                            (Integer/parseInt))
         check-mark (check-mark check-mark-base)]
-    (str
-     (format "%02d" (::day person))
-     (format "%02d" (::month person))
-     (apply str (take-last 2 (str (::year person))))
-     (century-symbol (::year person))
-     person-number
-     check-mark)))
+    (str day-padded
+         month-padded
+         year-without-century
+         (century-symbol (::year person))
+         person-number
+         check-mark)))
+
+(defn generate-random-social-security-number
+  []
+  (->
+   (gen/generate (s/gen ::person))
+   (generate-social-security-number)))
 
 (s/def ::social-security-number (s/with-gen
                                   (s/and valid-format?
                                          check-mark-valid?)
-                                  #(s/gen )))
+                                  #(gen/return (generate-random-social-security-number))))
 
 (s/def ::day (s/int-in 1 32))
 (s/def ::month (s/int-in 1 13))
