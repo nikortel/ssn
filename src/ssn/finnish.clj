@@ -13,6 +13,14 @@
 (def birthdate-length 6)
 (def check-mark-mod 31)
 
+(defn rand-int-in-range
+  "Returns a random integer between min (inclusive) and max (exclusive)."
+  [min max]
+  {:pre [(integer? min)
+	 (integer? max)
+	 (<= min max)]}
+  (+ min (rand-int (- max min))))
+
 (defn check-mark-base
   "Takes in Finnish social security number and returns base for check mark calculation"
   [social-security-number]
@@ -59,7 +67,8 @@
 
 (defn generate-person-number
   [gender]
-  (let [person-number (rand-int 999)
+  ;;generate maximum value of 998 as we may need to add one to get the gender correctly
+  (let [person-number (rand-int-in-range 1 999)
         gender-fixed-person-number (case gender
                                      :male (if (odd? person-number) person-number (+ 1 person-number))
                                      :female (if (even? person-number) person-number (+ 1 person-number)))]
@@ -96,7 +105,10 @@
 (defn generate-random-social-security-number
   []
   (->
-   (gen/generate (s/gen ::person))
+   {::day (rand-int-in-range 1 32)
+    ::month (rand-int-in-range 1 13)
+    ::year (rand-int-in-range 1850 2100)
+    ::gender (rand-nth [:male :female])}
    (generate-social-security-number)))
 
 (s/def ::social-security-number (s/with-gen
@@ -109,3 +121,7 @@
 (s/def ::year (s/int-in 1850 2100))
 (s/def ::gender #{:male :female})
 (s/def ::person (s/keys :req [::day ::month ::year ::gender]))
+
+(s/fdef generate-social-security-number
+        :args (s/cat :person ::person)
+        :ret string?)

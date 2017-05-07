@@ -2,7 +2,8 @@
   (:require [ssn.finnish :refer :all]
             [clojure.test :refer :all]
             [clojure.spec.alpha :as s]
-            [clojure.spec.gen.alpha :as gen]))
+            [clojure.spec.gen.alpha :as gen]
+            [clojure.spec.test.alpha :as stest]))
 
 (deftest format-spec-test
   (testing "SSN conforms to format"
