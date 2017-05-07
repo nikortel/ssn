@@ -87,6 +87,7 @@
   [person]
   (let [day-padded (format "%02d" (::day person))
         month-padded (format "%02d" (::month person))
+        century-symbol (century-symbol (::year person))
         year-without-century (apply str (take-last 2 (str (::year person))))
         person-number (generate-person-number (::gender person))
         check-mark-base (-> (str day-padded
@@ -98,7 +99,7 @@
     (str day-padded
          month-padded
          year-without-century
-         (century-symbol (::year person))
+         century-symbol
          person-number
          check-mark)))
 
