@@ -54,3 +54,74 @@
     (is (s/valid? :ssn.finnish/social-security-number "040597-9753")))
   (testing "Social security number with check mark 0 is valid"
     (is (s/valid? :ssn.finnish/social-security-number "060597-9010"))))
+
+(deftest day-spec-test
+  (testing "0 is not a day in social security number"
+    (is (not (s/valid? :ssn.finnish/day 0))))
+  (testing "1 is a day in social security number"
+    (is (s/valid? :ssn.finnish/day 1)))
+  (testing "31 is a day in social security number"
+    (is (s/valid? :ssn.finnish/day 31)))
+  (testing "32 is a day in social security number"
+    (is (not (s/valid? :ssn.finnish/day 32)))))
+
+(deftest month-spec-test
+  (testing "0 is not a month in social security number"
+    (is (not (s/valid? :ssn.finnish/month 0))))
+  (testing "1 is a month in social security number"
+    (is (s/valid? :ssn.finnish/month 1)))
+  (testing "12 is a month in social security number"
+    (is (s/valid? :ssn.finnish/month 12)))
+  (testing "13 is a month in social security number"
+    (is (not (s/valid? :ssn.finnish/month 13)))))
+
+(deftest year-spec-test
+  (testing "1849 is not a year in social security number"
+    (is (not (s/valid? :ssn.finnish/year 1849))))
+  (testing "1850 is a year in social security number"
+    (is (s/valid? :ssn.finnish/year 1850)))
+  (testing "2099 is a year in social security number"
+    (is (s/valid? :ssn.finnish/year 2099)))
+  (testing "2100 is a year in social security number"
+    (is (not (s/valid? :ssn.finnish/year 2100)))))
+
+(deftest gender-spec-test
+  (testing ":male is a gender in social security number"
+    (is (s/valid? :ssn.finnish/gender :male)))
+  (testing ":female is a gender in social security number"
+    (is (s/valid? :ssn.finnish/gender :female)))
+  (testing ":other is not a gender in social security number"
+    (is (not (s/valid? :ssn.finnish/gender :other)))))
+
+(deftest generate-person-number-test-with-odd-random-value
+  (with-redefs [rand-int (fn [max-value] 1)]
+    (testing "Generates odd person number for male"
+      (is (odd? (Integer/parseInt (generate-person-number :male)))))
+    (testing "Generates even person number for female"
+      (is (even? (Integer/parseInt (generate-person-number :female)))))
+    (testing "Generates person number with length 3 for male"
+      (is (= 3 (count (generate-person-number :male)))))
+    (testing "Generates person number with length 3 for female"
+      (is (= 3 (count (generate-person-number :female)))))))
+
+(deftest generate-person-number-test-with-even-random-value
+  (with-redefs [rand-int (fn [max-value] 2)]
+    (testing "Generates odd person number for male"
+      (is (odd? (Integer/parseInt (generate-person-number :male)))))
+    (testing "Generates even person number for female"
+      (is (even? (Integer/parseInt (generate-person-number :female)))))
+    (testing "Generates person number with length 3 for male"
+      (is (= 3 (count (generate-person-number :male)))))
+    (testing "Generates person number with length 3 for female"
+      (is (= 3 (count (generate-person-number :female)))))))
+
+(deftest generate-person-number-test-with-random-value-that-do-not-need-leading-zeros
+  (with-redefs [rand-int (fn [max-value] 100)]
+    (testing "Generates odd person number for male"
+      (is (odd? (Integer/parseInt (generate-person-number :male)))))
+    (testing "Generates even person number for female"
+      (is (even? (Integer/parseInt (generate-person-number :female)))))
+    (testing "Generates person number with length 3 for male"
+      (is (= 3 (count (generate-person-number :male)))))
+    (testing "Generates person number with length 3 for female"
+      (is (= 3 (count (generate-person-number :female)))))))

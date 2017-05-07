@@ -5,6 +5,8 @@
                   [17 "J"] [18 "K"] [19 "L"] [20 "M"] [21 "N"] [22 "P"] [23 "R"]
                   [24 "S"] [25 "T"] [26 "U"] [27 "V"] [28 "W"] [29 "X"] [30 "Y"]])
 
+(def century-symbols [["18" "+"] ["19" "-"] ["20" "A"]])
+
 (def finnish-ssn-format #"^(0[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])([5-9]\d\+|\d\d[-A])\d{3}[\dA-Z]$")
 (def person-number-length 3)
 (def birthdate-length 6)
@@ -54,5 +56,49 @@
         actual-check-mark (str (last social-security-number))]
     (= calculated-check-mark actual-check-mark)))
 
-(s/def ::social-security-number (s/and valid-format?
-                                       check-mark-valid?))
+(defn generate-person-number
+  [gender]
+  (let [person-number (rand-int 999)
+        gender-fixed-person-number (case gender
+                                     :male (if (odd? person-number) person-number (+ 1 person-number))
+                                     :female (if (even? person-number) person-number (+ 1 person-number)))]
+    (format "%03d" gender-fixed-person-number)))
+
+(defn century-symbol
+  [year]
+  (let [century (apply str (take 2 (str year)))]
+    (->
+     (filter #(= (first %) century) century-symbols)
+     (flatten)
+     (last))))
+
+(defn generate-social-security-number
+  "Takes in data in spec ::person and produces valid social security number"
+  [person]
+  (let [person-number (generate-person-number (::gender person))
+        check-mark-base (->
+                         (str
+                          (::day person)
+                          (::month person)
+                          (::year person)
+                          person-number)
+                         (Integer/parseInt))
+        check-mark (check-mark check-mark-base)]
+    (str
+     (format "%02d" (::day person))
+     (format "%02d" (::month person))
+     (apply str (take-last 2 (str (::year person))))
+     (century-symbol (::year person))
+     person-number
+     check-mark)))
+
+(s/def ::social-security-number (s/with-gen
+                                  (s/and valid-format?
+                                         check-mark-valid?)
+                                  #(s/gen )))
+
+(s/def ::day (s/int-in 1 32))
+(s/def ::month (s/int-in 1 13))
+(s/def ::year (s/int-in 1850 2100))
+(s/def ::gender #{:male :female})
+(s/def ::person (s/keys :req [::day ::month ::year ::gender]))
