@@ -35,9 +35,9 @@
 
 (deftest check-mark-test
   (testing "Returns check mark from check-marks-table"
-    (is (= "K" (check-mark "040597-959K"))))
-  (testing "Returns check mark candidate"
-    (is (= "3" (check-mark "040597-9753")))))
+    (is (= "K" (check-mark 40597959))))
+  (testing "Returns check mark without conversion from table"
+    (is (= "3" (check-mark 40597975)))))
 
 (deftest check-mark-valid?-test
   (testing "Returns true when checkmark is valid"

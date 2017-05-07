@@ -34,9 +34,9 @@
    (last)))
 
 (defn check-mark
-  "Takes in Finnish social security number and returns the checkmark"
-  [social-security-number]
-  (let [check-mark-number (mod (check-mark-base social-security-number) check-mark-mod)]
+  "Takes in chack mark base (birthdate and person number as integer) from social security number and returns the correct check mark for it"
+  [check-mark-base]
+  (let [check-mark-number (mod check-mark-base check-mark-mod)]
        (if (is-positive-single-digit-or-zero? check-mark-number)
          (str check-mark-number)
          (convert-check-mark check-mark-number))))
@@ -49,7 +49,10 @@
 (defn check-mark-valid?
   "Validates that the check mark in the social security number is correct"
   [social-security-number]
-  (= (str (last social-security-number)) (check-mark social-security-number)))
+  (= (str (last social-security-number))
+     (->
+      (check-mark-base social-security-number)
+      (check-mark))))
 
 (s/def ::social-security-number (s/and valid-format?
                                        check-mark-valid?))
