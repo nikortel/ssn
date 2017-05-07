@@ -10,16 +10,16 @@ A Clojure library designed to social security number validation via spec.
           [clojure.spec.gen.alpha :as gen])
 
 ;;Validate social security number
-(s/valid? :ssn.finnish/social-security-number "040597-9753")
+(s/valid? ::ssn/social-security-number "040597-9753")
 
 ;;Generate a social security number for specific birthdate and gender
-(ssn/generate-social-security-number {:ssn.finnish/day 1
-                                      :ssn.finnish/month 1
-                                      :ssn.finnish/year 1986
-                                      :ssn.finnish/gender :female})
+(ssn/generate-social-security-number {::ssn/day 1
+                                      ::ssn/month 1
+                                      ::ssn/year 1986
+                                      ::ssn/gender :female})
 
 ;;Generate a random social security number
-(gen/generate (s/gen :ssn.finnish/social-security-number))
+(gen/generate (s/gen ::ssn/social-security-number))
 ```
 
 ## License
