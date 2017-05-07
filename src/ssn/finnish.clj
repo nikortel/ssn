@@ -49,10 +49,10 @@
 (defn check-mark-valid?
   "Validates that the check mark in the social security number is correct"
   [social-security-number]
-  (= (str (last social-security-number))
-     (->
-      (check-mark-base social-security-number)
-      (check-mark))))
+  (let [check-mark-base (check-mark-base social-security-number)
+        calculated-check-mark (check-mark check-mark-base)
+        actual-check-mark (str (last social-security-number))]
+    (= calculated-check-mark actual-check-mark)))
 
 (s/def ::social-security-number (s/and valid-format?
                                        check-mark-valid?))
