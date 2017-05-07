@@ -21,12 +21,18 @@
 	 (<= min max)]}
   (+ min (rand-int (- max min))))
 
-(defn check-mark-base
-  "Takes in Finnish social security number and returns base for check mark calculation"
+(defn person-number
   [social-security-number]
   (->>
    (drop-last social-security-number)
    (take-last person-number-length)
+   (apply str)))
+
+(defn check-mark-base
+  "Takes in Finnish social security number and returns base for check mark calculation"
+  [social-security-number]
+  (->>
+   (person-number social-security-number)
    (concat (take birthdate-length social-security-number))
    (apply str)
    (Integer/parseInt)))
@@ -65,10 +71,16 @@
         actual-check-mark (str (last social-security-number))]
     (= calculated-check-mark actual-check-mark)))
 
+(defn person-number-valid?
+  [social-security-number]
+  (let [person-number-integer (Integer/parseInt (person-number social-security-number))]
+    (and (> person-number-integer 1) (< person-number-integer 1000))))
+
 (defn generate-person-number
   [gender]
   ;;generate maximum value of 998 as we may need to add one to get the gender correctly
-  (let [person-number (rand-int-in-range 1 999)
+  ;;person number is never less than 002
+  (let [person-number (rand-int-in-range 2 999)
         gender-fixed-person-number (case gender
                                      :male (if (odd? person-number) person-number (+ 1 person-number))
                                      :female (if (even? person-number) person-number (+ 1 person-number)))]
@@ -111,7 +123,8 @@
 
 (s/def ::social-security-number (s/with-gen
                                   (s/and valid-format?
-                                         check-mark-valid?)
+                                         check-mark-valid?
+                                         person-number-valid?)
                                   #(gen/return (generate-random-social-security-number))))
 
 (s/def ::day (s/int-in 1 32))
