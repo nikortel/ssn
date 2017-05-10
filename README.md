@@ -31,6 +31,24 @@ Usage of the generator functions needs test.check library. In Leiningen add this
 ;;Generate a random social security number
 (gen/generate (s/gen ::ssn/social-security-number))
 ```
+## Testing
+
+NOTE: Default test setup for cljs tests requires PhantomJS 
+
+To run clj and cljs tests execute
+```
+lein test-all-once
+```
+
+For clj tests
+```
+lein test
+```
+
+For cjls tests
+```
+lein test-cljs
+```
 
 ## License
 
