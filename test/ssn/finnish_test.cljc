@@ -27,17 +27,17 @@
   (testing "Returns check mark base"
     (is (= 40597959 (ssn/check-mark-base "040597-959K")))))
 
-(deftest is-positive-single-digit-or-zero?-test
+(deftest positive-single-digit-or-zero?-test
   (testing "Returns true when number is positive single digit - min value"
-    (is (ssn/is-positive-single-digit-or-zero? 0)))
+    (is (ssn/positive-single-digit-or-zero? 0)))
   (testing "Returns true when number is positive single digit - max value"
-    (is (ssn/is-positive-single-digit-or-zero? 9)))
+    (is (ssn/positive-single-digit-or-zero? 9)))
   (testing "Returns false when number is negative single digit"
-    (is (not (ssn/is-positive-single-digit-or-zero? -1))))
+    (is (not (ssn/positive-single-digit-or-zero? -1))))
   (testing "Returns false when number is positive double digit"
-    (is (not (ssn/is-positive-single-digit-or-zero? 10))))
+    (is (not (ssn/positive-single-digit-or-zero? 10))))
   (testing "Returns false when number is positive decimal"
-    (is (not (ssn/is-positive-single-digit-or-zero? 1.1)))))
+    (is (not (ssn/positive-single-digit-or-zero? 1.1)))))
 
 (deftest check-mark-test
   (testing "Returns check mark from check-marks-table"

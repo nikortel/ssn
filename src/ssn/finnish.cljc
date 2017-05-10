@@ -26,21 +26,19 @@
 
 (defn person-number
   [social-security-number]
-  (->>
-   (drop-last social-security-number)
-   (take-last person-number-length)
-   (apply str)))
+  (->> (drop-last social-security-number)
+       (take-last person-number-length)
+       (apply str)))
 
 (defn check-mark-base
   "Takes in Finnish social security number and returns base for check mark calculation"
   [social-security-number]
-  (->>
-   (person-number social-security-number)
-   (concat (take birthdate-length social-security-number))
-   (apply str)
-   (utils/str->int)))
+  (->> (person-number social-security-number)
+       (concat (take birthdate-length social-security-number))
+       (apply str)
+       (utils/str->int)))
 
-(defn is-positive-single-digit-or-zero?
+(defn positive-single-digit-or-zero?
   "Determines if the number is a positive single digit number or zero"
   [number]
   (and (integer? number) (< number 10) (>= number 0)))
@@ -48,16 +46,15 @@
 (defn convert-check-mark
   "Converts given number to a corresponding check mark"
   [check-mark-number]
-  (->
-   (filter #(= (first %) check-mark-number) check-marks)
-   (flatten)
-   (last)))
+  (-> (filter #(= (first %) check-mark-number) check-marks)
+      (flatten)
+      (last)))
 
 (defn check-mark
   "Takes in chack mark base (birthdate and person number as integer) from social security number and returns the correct check mark for it"
   [check-mark-base]
   (let [check-mark-number (mod check-mark-base check-mark-mod)]
-       (if (is-positive-single-digit-or-zero? check-mark-number)
+       (if (positive-single-digit-or-zero? check-mark-number)
          (str check-mark-number)
          (convert-check-mark check-mark-number))))
 
@@ -92,10 +89,9 @@
 (defn century-symbol
   [year]
   (let [century (apply str (take 2 (str year)))]
-    (->
-     (filter #(= (first %) century) century-symbols)
-     (flatten)
-     (last))))
+    (-> (filter #(= (first %) century) century-symbols)
+        (flatten)
+        (last))))
 
 (defn generate-social-security-number
   "Takes in data in spec ::person and produces valid social security number"
@@ -120,9 +116,8 @@
 
 (defn generate-random-social-security-number
   []
-  (->
-   (gen/generate (s/gen ::person))
-   (generate-social-security-number)))
+  (-> (gen/generate (s/gen ::person))
+      (generate-social-security-number)))
 
 (s/def ::social-security-number (s/with-gen
                                   (s/and valid-format?
