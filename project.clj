@@ -3,7 +3,14 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.9.0-alpha16"]]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha16"]
+                 ;;[org.clojure/clojurescript "1.9.521"]
+                 ]
   :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]]}}
-  :main ssn.core
-  :aot [ssn.core])
+  ;;:plugins [[lein-cljsbuild "1.1.6"]]
+  ;; :cljsbuild {:builds [{:source-paths ["src"]
+  ;;                       :compiler {:optimizations
+  ;;                                  :whitespace
+  ;;                                  :pretty-print true}}]}
+  ;; :hooks [leiningen.cljsbuild]
+  )

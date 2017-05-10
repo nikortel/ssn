@@ -1,6 +1,7 @@
 (ns ssn.finnish
   (:require [clojure.spec.alpha :as s]
-            [clojure.spec.gen.alpha :as gen]))
+            [clojure.spec.gen.alpha :as gen]
+            [ssn.utils :as utils]))
 
 (def check-marks [[10 "A"] [11 "B"] [12 "C"] [13 "D"] [14 "E"] [15 "F"] [16 "H"]
                   [17 "J"] [18 "K"] [19 "L"] [20 "M"] [21 "N"] [22 "P"] [23 "R"]
@@ -35,7 +36,7 @@
    (person-number social-security-number)
    (concat (take birthdate-length social-security-number))
    (apply str)
-   (Integer/parseInt)))
+   (utils/str->int)))
 
 (defn is-positive-single-digit-or-zero?
   "Determines if the number is a positive single digit number or zero"
@@ -73,7 +74,7 @@
 
 (defn person-number-valid?
   [social-security-number]
-  (let [person-number-integer (Integer/parseInt (person-number social-security-number))]
+  (let [person-number-integer (utils/str->int (person-number social-security-number))]
     (and (> person-number-integer 1) (< person-number-integer 1000))))
 
 (defn generate-person-number
@@ -106,7 +107,7 @@
                                  month-padded
                                  year-without-century
                                  person-number)
-                            (Integer/parseInt))
+                            (utils/str->int))
         check-mark (check-mark check-mark-base)]
     (str day-padded
          month-padded
