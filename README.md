@@ -16,8 +16,7 @@ A Clojure/ClojureScript library designed for social security number validation a
 ### Generators
 
 ```clojure
-(:require [ssn.finnish :as ssn]
-          [clojure.spec.alpha :as s])
+(:require [ssn.finnish :as ssn])
 
 ;;Generate a social security number for specific birthdate and gender
 (ssn/generate-social-security-number {::ssn/day 1
