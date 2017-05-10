@@ -1,6 +1,6 @@
 # ssn
 
-A Clojure library designed to social security number validation via spec.
+A Clojure/ClojureScript library designed for social security number validation and generation via spec.
 
 ## Usage
 
