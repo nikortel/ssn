@@ -1,7 +1,9 @@
 (ns ssn.finnish
-  (:require [clojure.spec.alpha :as s]
-            [clojure.spec.gen.alpha :as gen]
-            [ssn.utils :as utils]))
+  (:require [ssn.utils :as utils]
+            #?(:clj  [clojure.spec.alpha :as s]
+               :cljs [cljs.spec :as s])
+            #?(:clj  [clojure.spec.gen.alpha :as gen]
+               :cljs [cljs.spec.impl.gen :as gen])))
 
 (def check-marks [[10 "A"] [11 "B"] [12 "C"] [13 "D"] [14 "E"] [15 "F"] [16 "H"]
                   [17 "J"] [18 "K"] [19 "L"] [20 "M"] [21 "N"] [22 "P"] [23 "R"]
@@ -85,7 +87,7 @@
         gender-fixed-person-number (case gender
                                      :male (if (odd? person-number) person-number (+ 1 person-number))
                                      :female (if (even? person-number) person-number (+ 1 person-number)))]
-    (format "%03d" gender-fixed-person-number)))
+    (utils/zero-pad gender-fixed-person-number 3)))
 
 (defn century-symbol
   [year]
@@ -98,8 +100,8 @@
 (defn generate-social-security-number
   "Takes in data in spec ::person and produces valid social security number"
   [person]
-  (let [day-padded (format "%02d" (::day person))
-        month-padded (format "%02d" (::month person))
+  (let [day-padded (utils/zero-pad (::day person) 2)
+        month-padded (utils/zero-pad (::month person) 2)
         century-symbol (century-symbol (::year person))
         year-without-century (apply str (take-last 2 (str (::year person))))
         person-number (generate-person-number (::gender person))
