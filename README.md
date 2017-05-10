@@ -4,6 +4,8 @@ A Clojure library designed to social security number validation via spec.
 
 ## Usage
 
+### Validator
+
 ```clojure
 (:require [ssn.finnish :as ssn]
           [clojure.spec.alpha :as s]
@@ -11,7 +13,15 @@ A Clojure library designed to social security number validation via spec.
 
 ;;Validate social security number
 (s/valid? ::ssn/social-security-number "040597-9753")
+```
+### Generators
 
+Usage of the generator functions needs test.check library. In Leiningen add this to your project.clj
+```clojure
+:profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]]}}
+```
+
+```clojure
 ;;Generate a social security number for specific birthdate and gender
 (ssn/generate-social-security-number {::ssn/day 1
                                       ::ssn/month 1
