@@ -53,51 +53,51 @@
 
 (deftest social-security-number-spec-test
   (testing "1849 social security number is not valid"
-    (is (not (s/valid? :ssn.finnish/social-security-number "010149+9635"))))
+    (is (not (s/valid? ::ssn/social-security-number "010149+9635"))))
   (testing "1850 social security number is valid"
-    (is (s/valid? :ssn.finnish/social-security-number "010150+931C")))
+    (is (s/valid? ::ssn/social-security-number "010150+931C")))
   (testing "Numbers only social security number is valid"
-    (is (s/valid? :ssn.finnish/social-security-number "040597-9753")))
+    (is (s/valid? ::ssn/social-security-number "040597-9753")))
   (testing "Social security number with check mark 0 is valid"
-    (is (s/valid? :ssn.finnish/social-security-number "060597-9010"))))
+    (is (s/valid? ::ssn/social-security-number "060597-9010"))))
 
 (deftest day-spec-test
   (testing "0 is not a day in social security number"
-    (is (not (s/valid? :ssn.finnish/day 0))))
+    (is (not (s/valid? ::ssn/day 0))))
   (testing "1 is a day in social security number"
-    (is (s/valid? :ssn.finnish/day 1)))
+    (is (s/valid? ::ssn/day 1)))
   (testing "31 is a day in social security number"
-    (is (s/valid? :ssn.finnish/day 31)))
+    (is (s/valid? ::ssn/day 31)))
   (testing "32 is a day in social security number"
-    (is (not (s/valid? :ssn.finnish/day 32)))))
+    (is (not (s/valid? ::ssn/day 32)))))
 
 (deftest month-spec-test
   (testing "0 is not a month in social security number"
-    (is (not (s/valid? :ssn.finnish/month 0))))
+    (is (not (s/valid? ::ssn/month 0))))
   (testing "1 is a month in social security number"
-    (is (s/valid? :ssn.finnish/month 1)))
+    (is (s/valid? ::ssn/month 1)))
   (testing "12 is a month in social security number"
-    (is (s/valid? :ssn.finnish/month 12)))
+    (is (s/valid? ::ssn/month 12)))
   (testing "13 is a month in social security number"
-    (is (not (s/valid? :ssn.finnish/month 13)))))
+    (is (not (s/valid? ::ssn/month 13)))))
 
 (deftest year-spec-test
   (testing "1849 is not a year in social security number"
-    (is (not (s/valid? :ssn.finnish/year 1849))))
+    (is (not (s/valid? ::ssn/year 1849))))
   (testing "1850 is a year in social security number"
-    (is (s/valid? :ssn.finnish/year 1850)))
+    (is (s/valid? ::ssn/year 1850)))
   (testing "2099 is a year in social security number"
-    (is (s/valid? :ssn.finnish/year 2099)))
+    (is (s/valid? ::ssn/year 2099)))
   (testing "2100 is a year in social security number"
-    (is (not (s/valid? :ssn.finnish/year 2100)))))
+    (is (not (s/valid? ::ssn/year 2100)))))
 
 (deftest gender-spec-test
   (testing ":male is a gender in social security number"
-    (is (s/valid? :ssn.finnish/gender :male)))
+    (is (s/valid? ::ssn/gender :male)))
   (testing ":female is a gender in social security number"
-    (is (s/valid? :ssn.finnish/gender :female)))
+    (is (s/valid? ::ssn/gender :female)))
   (testing ":other is not a gender in social security number"
-    (is (not (s/valid? :ssn.finnish/gender :other)))))
+    (is (not (s/valid? ::ssn/gender :other)))))
 
 (deftest generate-person-number-test-with-odd-random-value
   (with-redefs [rand-int (fn [max-value] 1)]
@@ -134,14 +134,14 @@
 
 (deftest generate-social-security-number-test
   (testing "Generates valid social security numbers for random persons"
-    (let [sample-persons (gen/sample (s/gen :ssn.finnish/person))]
+    (let [sample-persons (gen/sample (s/gen ::ssn/person))]
       (is (every?
-           #(s/valid? :ssn.finnish/social-security-number (ssn/generate-social-security-number %))
+           #(s/valid? ::ssn/social-security-number (ssn/generate-social-security-number %))
            sample-persons)))))
 
 (deftest social-security-number-spec-test-with-generator
   (testing "Generates valid social security numbers from spec"
-    (let [sample-social-security-numbers (gen/sample (s/gen :ssn.finnish/social-security-number))]
+    (let [sample-social-security-numbers (gen/sample (s/gen ::ssn/social-security-number))]
       (is (every?
-           #(s/valid? :ssn.finnish/social-security-number %)
+           #(s/valid? ::ssn/social-security-number %)
            sample-social-security-numbers)))))
