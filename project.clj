@@ -16,7 +16,7 @@
                                    :whitespace
                                    :pretty-print true}}
                        {:id "test"
-                        :source-paths ["src" "test" "cljs-test-runner"]
+                        :source-paths ["src" "test"]
                         :compiler {:output-to "resources/public/js/testable.js"
                                    :main ssn.cljs-test-runner
                                    :optimizations :none}}]}
