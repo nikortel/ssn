@@ -15,6 +15,8 @@
 (def person-number-length 3)
 (def birthdate-length 6)
 (def check-mark-mod 31)
+(def zero-pad-length-2 (partial utils/zero-pad 2))
+(def zero-pad-length-3 (partial utils/zero-pad 3))
 
 (defn rand-int-in-range
   "Returns a random integer between min (inclusive) and max (exclusive)."
@@ -58,6 +60,8 @@
          (str check-mark-number)
          (convert-check-mark check-mark-number))))
 
+(def social-security-number->check-mark (comp check-mark check-mark-base))
+
 (defn valid-format?
   "Validates the generic format of a finnish social security number"
   [social-security-number]
@@ -66,8 +70,7 @@
 (defn check-mark-valid?
   "Validates that the check mark in the social security number is correct"
   [social-security-number]
-  (let [check-mark-base (check-mark-base social-security-number)
-        calculated-check-mark (check-mark check-mark-base)
+  (let [calculated-check-mark (social-security-number->check-mark social-security-number)
         actual-check-mark (str (last social-security-number))]
     (= calculated-check-mark actual-check-mark)))
 
@@ -84,7 +87,7 @@
         gender-fixed-person-number (case gender
                                      :male (if (odd? person-number) person-number (+ 1 person-number))
                                      :female (if (even? person-number) person-number (+ 1 person-number)))]
-    (utils/zero-pad gender-fixed-person-number 3)))
+    (zero-pad-length-3 gender-fixed-person-number)))
 
 (defn century-symbol
   [year]
@@ -96,8 +99,8 @@
 (defn generate-social-security-number
   "Takes in data in spec ::person and produces valid social security number"
   [person]
-  (let [day-padded (utils/zero-pad (::day person) 2)
-        month-padded (utils/zero-pad (::month person) 2)
+  (let [day-padded (zero-pad-length-2 (::day person))
+        month-padded (zero-pad-length-2 (::month person))
         century-symbol (century-symbol (::year person))
         year-without-century (apply str (take-last 2 (str (::year person))))
         person-number (generate-person-number (::gender person))

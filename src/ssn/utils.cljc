@@ -9,7 +9,7 @@
 
 (defn zero-pad
   "Converts value to a string and pads it to length with leading zeros"
-  ([value length]
+  ([length value]
    (if (> 1 length)
      (str value)
      (str (string/join (take (- length (count (str value))) (repeat "0"))) value))))
