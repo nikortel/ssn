@@ -22,4 +22,5 @@
                                    :optimizations :none}}]}
 
   :aliases {"test-cljs" ["doo" "once" "phantom" "test"]
-            "test-all-once" ["do" "test," "test-cljs"]})
+            "test-all-once" ["do" "test," "test-cljs"]}
+  :monkeypatch-clojure-test false)

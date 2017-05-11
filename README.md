@@ -60,12 +60,6 @@ For cjls tests
 ```
 lein test-cljs
 ```
-generate-social-security-number function can be spec tested via repl using:
-```clojure
-(stest/check `generate-social-security-number)
-```
-Apparently the integration of clojure.spec.test.alpha into clojure.test is not trivial at this moment
-
 ## License
 
 Copyright © 2017 Niko Kortelainen

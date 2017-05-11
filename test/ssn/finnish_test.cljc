@@ -7,7 +7,9 @@
             #?(:clj  [clojure.spec.alpha :as s]
                :cljs [cljs.spec :as s])
             #?(:clj  [clojure.spec.gen.alpha :as gen]
-               :cljs [cljs.spec.impl.gen :as gen])))
+               :cljs [cljs.spec.impl.gen :as gen])
+            #?(:clj  [clojure.spec.test.alpha :as stest]
+               :cljs [cljs.spec.test :as stest])))
 
 (deftest format-spec-test
   (testing "SSN conforms to format"
@@ -145,3 +147,8 @@
       (is (every?
            #(s/valid? ::ssn/social-security-number %)
            sample-social-security-numbers)))))
+
+;;Not yet working with cljs
+#?(:clj (deftest generate-social-security-number-spec-test
+          (testing "generate-social-security-number conforms to spec"
+            (is (true? (get-in (first (stest/check 'ssn.finnish/generate-social-security-number)) [:clojure.spec.test.check/ret :result]))))))
