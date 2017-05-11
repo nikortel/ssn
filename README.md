@@ -60,7 +60,7 @@ For cjls tests
 ```
 lein test-cljs
 ```
-generate-social-security-number spec can be tested via repl using:
+generate-social-security-number function can be spec tested via repl using:
 ```clojure
 (stest/check `generate-social-security-number)
 ```
