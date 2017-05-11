@@ -136,4 +136,5 @@
 
 (s/fdef generate-social-security-number
         :args (s/cat :person ::person)
-        :ret string?)
+        :ret string?
+        :fn #(s/valid? ::social-security-number (:ret %)))
