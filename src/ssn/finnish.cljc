@@ -120,11 +120,12 @@
 (def generate-random-social-security-number
   (comp generate-social-security-number gen/generate (partial s/gen ::person)))
 
-(s/def ::social-security-number (s/with-gen
-                                  (s/and valid-format?
-                                         check-mark-valid?
-                                         person-number-valid?)
-                                  #(gen/return (generate-random-social-security-number))))
+(s/def ::social-security-number
+  (s/with-gen
+    (s/and valid-format?
+           check-mark-valid?
+           person-number-valid?)
+    #(gen/return (generate-random-social-security-number))))
 
 (s/def ::day (s/int-in 1 32))
 (s/def ::month (s/int-in 1 13))
