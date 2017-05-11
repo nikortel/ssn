@@ -117,10 +117,8 @@
          person-number
          check-mark)))
 
-(defn generate-random-social-security-number
-  []
-  (-> (gen/generate (s/gen ::person))
-      (generate-social-security-number)))
+(def generate-random-social-security-number
+  (comp generate-social-security-number gen/generate (partial s/gen ::person)))
 
 (s/def ::social-security-number (s/with-gen
                                   (s/and valid-format?
