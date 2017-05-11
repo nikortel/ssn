@@ -18,14 +18,6 @@
 (def zero-pad-length-2 (partial utils/zero-pad 2))
 (def zero-pad-length-3 (partial utils/zero-pad 3))
 
-(defn rand-int-in-range
-  "Returns a random integer between min (inclusive) and max (exclusive)."
-  [min max]
-  {:pre [(integer? min)
-	 (integer? max)
-	 (<= min max)]}
-  (+ min (rand-int (- max min))))
-
 (defn person-number
   [social-security-number]
   (->> (drop-last social-security-number)
@@ -40,11 +32,6 @@
        (apply str)
        (utils/str->int)))
 
-(defn positive-single-digit-or-zero?
-  "Determines if the number is a positive single digit number or zero"
-  [number]
-  (and (integer? number) (< number 10) (>= number 0)))
-
 (defn convert-check-mark
   "Converts given number to a corresponding check mark"
   [check-mark-number]
@@ -56,7 +43,7 @@
   "Takes in chack mark base (birthdate and person number as integer) from social security number and returns the correct check mark for it"
   [check-mark-base]
   (let [check-mark-number (mod check-mark-base check-mark-mod)]
-       (if (positive-single-digit-or-zero? check-mark-number)
+       (if (utils/positive-single-digit-or-zero? check-mark-number)
          (str check-mark-number)
          (convert-check-mark check-mark-number))))
 
@@ -83,7 +70,7 @@
   [gender]
   ;;generate maximum value of 998 as we may need to add one to get the gender correctly
   ;;person number is never less than 002
-  (let [person-number (rand-int-in-range 2 999)
+  (let [person-number (utils/rand-int-in-range 2 999)
         gender-fixed-person-number (case gender
                                      :male (if (odd? person-number) person-number (+ 1 person-number))
                                      :female (if (even? person-number) person-number (+ 1 person-number)))]

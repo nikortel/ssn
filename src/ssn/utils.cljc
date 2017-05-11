@@ -13,3 +13,16 @@
    (if (> 1 length)
      (str value)
      (str (string/join (take (- length (count (str value))) (repeat "0"))) value))))
+
+(defn rand-int-in-range
+  "Returns a random integer between min (inclusive) and max (exclusive)."
+  [min max]
+  {:pre [(integer? min)
+	 (integer? max)
+	 (<= min max)]}
+  (+ min (rand-int (- max min))))
+
+(defn positive-single-digit-or-zero?
+  "Determines if the number is a positive single digit number or zero"
+  [number]
+  (and (integer? number) (< number 10) (>= number 0)))
