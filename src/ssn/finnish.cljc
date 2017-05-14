@@ -43,7 +43,7 @@
   "Takes in chack mark base (birthdate and person number as integer) from social security number and returns the correct check mark for it"
   [check-mark-base]
   (let [check-mark-number (mod check-mark-base check-mark-mod)]
-       (if (utils/positive-single-digit-or-zero? check-mark-number)
+       (if (<= 0 check-mark-number 9)
          (str check-mark-number)
          (convert-check-mark check-mark-number))))
 

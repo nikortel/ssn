@@ -1,5 +1,7 @@
 (ns ssn.utils
-  (:require [clojure.string :as string]))
+  (:require [clojure.string :as string]
+            #?(:clj  [clojure.spec.alpha :as s]
+               :cljs [cljs.spec :as s])))
 
 (defn str->int
   "Takes in a string and converts it to an integer"
@@ -17,12 +19,18 @@
 (defn rand-int-in-range
   "Returns a random integer between min (inclusive) and max (exclusive)."
   [min max]
-  {:pre [(integer? min)
-	 (integer? max)
+  {:pre [(int? min)
+	 (int? max)
 	 (<= min max)]}
   (+ min (rand-int (- max min))))
 
-(defn positive-single-digit-or-zero?
-  "Determines if the number is a positive single digit number or zero"
-  [number]
-  (and (integer? number) (< number 10) (>= number 0)))
+(s/fdef rand-int-in-range
+        :args (s/and (s/cat :min (s/int-in 0 #?(:clj  (Integer/MAX_VALUE)
+                                                :cljs (js/Number.MAX_SAFE_INTEGER)))
+                            :max (s/int-in 1 #?(:clj  (Integer/MAX_VALUE)
+                                                :cljs (js/Number.MAX_SAFE_INTEGER))))
+                     #(<= (:min %) (:max %)))
+        :ret int?
+        :fn #(<= (-> % :args :min)
+                 (:ret %)
+                 (-> % :args :max)))
