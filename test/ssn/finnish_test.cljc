@@ -2,14 +2,15 @@
   (:require [ssn.finnish :as ssn]
             [ssn.utils :as utils]
             [clojure.test.check.generators]
+            [ssn.test-helpers :as help]
             #?(:clj  [clojure.test :refer [deftest testing is]]
                :cljs [cljs.test :refer-macros [deftest is testing run-tests]])
             #?(:clj  [clojure.spec.alpha :as s]
-               :cljs [cljs.spec :as s])
+               :cljs [cljs.spec.alpha :as s])
             #?(:clj  [clojure.spec.gen.alpha :as gen]
-               :cljs [cljs.spec.impl.gen :as gen])
+               :cljs [cljs.spec.gen.alpha :as gen])
             #?(:clj  [clojure.spec.test.alpha :as stest]
-               :cljs [cljs.spec.test :as stest])))
+               :cljs [cljs.spec.test.alpha :as stest])))
 
 (deftest format-spec-test
   (testing "SSN conforms to format"
@@ -139,4 +140,4 @@
 ;;Not yet working with cljs
 #?(:clj (deftest generate-social-security-number-spec-test
           (testing "generate-social-security-number conforms to spec"
-            (is (true? (get-in (first (stest/check 'ssn.finnish/generate-social-security-number)) [:clojure.spec.test.check/ret :result]))))))
+            (is (true? (help/stest-result (stest/check 'ssn.finnish/generate-social-security-number)))))))

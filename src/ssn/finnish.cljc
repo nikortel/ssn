@@ -1,9 +1,9 @@
 (ns ssn.finnish
   (:require [ssn.utils :as utils]
             #?(:clj  [clojure.spec.alpha :as s]
-               :cljs [cljs.spec :as s])
+               :cljs [cljs.spec.alpha :as s])
             #?(:clj  [clojure.spec.gen.alpha :as gen]
-               :cljs [cljs.spec.impl.gen :as gen])))
+               :cljs [cljs.spec.gen.alpha :as gen])))
 
 (def check-marks [[10 "A"] [11 "B"] [12 "C"] [13 "D"] [14 "E"] [15 "F"] [16 "H"]
                   [17 "J"] [18 "K"] [19 "L"] [20 "M"] [21 "N"] [22 "P"] [23 "R"]

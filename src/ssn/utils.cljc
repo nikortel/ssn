@@ -1,7 +1,7 @@
 (ns ssn.utils
   (:require [clojure.string :as string]
             #?(:clj  [clojure.spec.alpha :as s]
-               :cljs [cljs.spec :as s])))
+               :cljs [cljs.spec.alpha :as s])))
 
 (defn str->int
   "Takes in a string and converts it to an integer"
