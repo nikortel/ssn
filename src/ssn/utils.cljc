@@ -20,15 +20,15 @@
   "Returns a random integer between min (inclusive) and max (exclusive)."
   [min max]
   {:pre [(int? min)
-	 (int? max)
-	 (<= min max)]}
+         (int? max)
+         (<= min max)]}
   (+ min (rand-int (- max min))))
 
 (s/fdef rand-int-in-range
         :args (s/and (s/cat :min (s/int-in 0 #?(:clj  (Integer/MAX_VALUE)
-                                                :cljs (js/Number.MAX_SAFE_INTEGER)))
+                                                :cljs js/Number.MAX_VALUE))
                             :max (s/int-in 1 #?(:clj  (Integer/MAX_VALUE)
-                                                :cljs (js/Number.MAX_SAFE_INTEGER))))
+                                                :cljs js/Number.MAX_VALUE)))
                      #(<= (:min %) (:max %)))
         :ret int?
         :fn #(<= (-> % :args :min)
