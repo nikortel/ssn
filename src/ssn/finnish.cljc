@@ -30,14 +30,14 @@
   (->> (person-number social-security-number)
        (concat (take birthdate-length social-security-number))
        (apply str)
-       (utils/str->int)))
+       utils/str->int))
 
 (defn convert-check-mark
   "Converts given number to a corresponding check mark"
   [check-mark-number]
   (-> (filter #(= (first %) check-mark-number) check-marks)
-      (flatten)
-      (last)))
+      flatten
+      last))
 
 (defn check-mark
   "Takes in chack mark base (birthdate and person number as integer) from social security number and returns the correct check mark for it"
@@ -64,7 +64,7 @@
 (defn person-number-valid?
   [social-security-number]
   (let [person-number-integer (utils/str->int (person-number social-security-number))]
-    (and (> person-number-integer 1) (< person-number-integer 1000))))
+    (<= 2 person-number-integer 999)))
 
 (defn generate-person-number
   [gender]
@@ -80,8 +80,8 @@
   [year]
   (let [century (apply str (take 2 (str year)))]
     (-> (filter #(= (first %) century) century-symbols)
-        (flatten)
-        (last))))
+        flatten
+        last)))
 
 (defn generate-social-security-number
   "Takes in data in spec ::person and produces valid social security number"
