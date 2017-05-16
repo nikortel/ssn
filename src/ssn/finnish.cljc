@@ -67,9 +67,9 @@
     (<= 2 person-number-integer 999)))
 
 (defn generate-person-number
+  "Generates person identification code from 002 (smallest possible real person identification number) to 999.
+  Returns odd numbers for :male gender and even numbers for :female."
   [gender]
-  ;;generate maximum value of 998 as we may need to add one to get the gender correctly
-  ;;person number is never less than 002
   (let [person-number (utils/rand-int-in-range 2 999)
         gender-fixed-person-number (case gender
                                      :male (if (odd? person-number) person-number (+ 1 person-number))
