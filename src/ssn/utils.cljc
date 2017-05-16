@@ -28,6 +28,14 @@
          (<= min max)]}
   (+ min (rand-int (- max min))))
 
+(defn filter-flatten-last
+  "Takes in sequence, applies the filter, flattens the result and returns last"
+  [filter-fn seq]
+  (->> seq
+       (filter filter-fn)
+       flatten
+       last))
+
 ;;Defines safe positive integer range that will not cause overflow
 (s/def ::positive-integer (s/int-in 0 #?(:clj  (Integer/MAX_VALUE)
                                          :cljs js/Number.MAX_VALUE)))

@@ -35,9 +35,8 @@
 (defn convert-check-mark
   "Converts given number to a corresponding check mark"
   [check-mark-number]
-  (-> (filter #(= (first %) check-mark-number) check-marks)
-      flatten
-      last))
+  (->> check-marks
+       (utils/filter-flatten-last #(= (first %) check-mark-number))))
 
 (defn check-mark
   "Takes in chack mark base (birthdate and person number as integer) from social security number and returns the correct check mark for it"
@@ -52,7 +51,8 @@
 (defn valid-format?
   "Validates the generic format of a finnish social security number"
   [social-security-number]
-  (and (string? social-security-number) (re-matches finnish-ssn-format social-security-number)))
+  (and (string? social-security-number)
+       (re-matches finnish-ssn-format social-security-number)))
 
 (defn check-mark-valid?
   "Validates that the check mark in the social security number is correct"
@@ -79,9 +79,8 @@
 (defn century-symbol
   [year]
   (let [century (apply str (take 2 (str year)))]
-    (-> (filter #(= (first %) century) century-symbols)
-        flatten
-        last)))
+    (->> century-symbols
+         (utils/filter-flatten-last #(= (first %) century)))))
 
 (defn generate-social-security-number
   "Takes in data in spec ::person and produces valid social security number"
