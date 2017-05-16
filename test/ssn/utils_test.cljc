@@ -12,3 +12,11 @@
 #?(:clj (deftest rand-int-in-range-spec-test
           (testing "rand-int-in-range conforms to spec"
             (is (true? (help/stest-result (stest/check `ssn.utils/rand-int-in-range)))))))
+
+#?(:clj (deftest zero-pad-spec-test
+          (testing "zero-pad conforms to spec"
+            (is (true? (help/stest-result (stest/check `ssn.utils/zero-pad)))))))
+
+#?(:clj (deftest str->int-spec-test
+          (testing "str->int conforms to spec"
+            (is (true? (help/stest-result (stest/check `ssn.utils/str->int)))))))
